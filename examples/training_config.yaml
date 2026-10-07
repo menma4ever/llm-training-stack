@@ -1,0 +1,55 @@
+schema_version: "1.0.0"
+task_type: "lora"
+
+model:
+  model_name_or_path: "hf-internal-testing/tiny-random-LlamaForCausalLM"
+  trust_remote_code: false
+  torch_dtype: "float32"
+  attn_implementation: "sdpa"
+
+dataset:
+  dataset_name_or_path: "synthetic"
+  train_split: "train"
+  eval_split: "validation"
+  prompt_column: "prompt"
+  response_column: "response"
+  max_seq_length: 512
+  packing: false
+  train_sample_limit: 50
+
+peft:
+  r: 8
+  lora_alpha: 16
+  lora_dropout: 0.05
+  target_modules:
+    - "q_proj"
+    - "v_proj"
+  bias: "none"
+  task_type: "CAUSAL_LM"
+
+optimizer:
+  optimizer_type: "adamw_torch"
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  warmup_ratio: 0.05
+  lr_scheduler_type: "cosine"
+  max_grad_norm: 1.0
+
+hardware:
+  target_device: "auto"
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 2
+  gradient_accumulation_steps: 2
+  gradient_checkpointing: false
+  mixed_precision: "no"
+
+logging:
+  output_dir: "./runs/lora_demo"
+  logging_steps: 2
+  eval_steps: 10
+  save_steps: 10
+  save_total_limit: 2
+
+epochs: 1
+max_steps: 10
+seed: 42
