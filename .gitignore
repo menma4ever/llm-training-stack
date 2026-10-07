@@ -63,7 +63,7 @@ venv.bak/
 
 # Local training outputs, checkpoints, and telemetry runs
 runs/
-checkpoints/
+/checkpoints/
 *.pt
 *.safetensors
 *.bin
