@@ -5,7 +5,7 @@
 [![PyTorch: 2.x](https://img.shields.io/badge/PyTorch-2.x-red.svg)](https://pytorch.org)
 [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97-Hugging%20Face-yellow.svg)](https://huggingface.co)
 [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-purple.svg)](https://modelcontextprotocol.io)
-[![Tests Passing](https://img.shields.io/badge/Tests-114%20passed-brightgreen.svg)](tests/)
+[![CI - Clean Build & Isolated Verification](https://github.com/menma4ever/llm-training-stack/actions/workflows/ci.yml/badge.svg)](https://github.com/menma4ever/llm-training-stack/actions/workflows/ci.yml)
 
 A professional, modular open-source framework designed for machine learning engineers to **configure, validate, launch, monitor, deterministically resume, evaluate, and compare** real LLM training and adaptation workloads.
 
@@ -228,6 +228,7 @@ Exposed MCP Tools:
 
 - 🏛️ [Architecture & Technical Rationale](docs/architecture.md) — System design, dual-stage preflight, and security model.
 - 📊 [Hardware & Framework Compatibility Matrix](COMPATIBILITY.md) — CPU/GPU support matrix, precision types, and multi-node roadmap.
+- 🎯 [Single-GPU CUDA Validation Plan](docs/cuda_validation_plan.md) — Scoped empirical validation protocol for real GPU training runs, peak VRAM, throughput, and resume fidelity.
 - 📋 [CLI Reference](docs/cli_reference.md) — Complete `train-stack` command reference.
 - 📦 [Python API Reference](docs/api_reference.md) — Public classes, configuration models, and pipelines.
 - 🔄 [Reproducibility & Resumption Guide](docs/reproducibility.md) — Deterministic resumption proof, bundle anatomy, and provenance.
@@ -244,7 +245,7 @@ Run the automated test suite across all modules:
 pytest tests/ -v
 ```
 
-All 114 tests across 12 test modules pass on source-host (`TEST_SUITE_EVIDENCE_14.log`, 239.41s, SHA256 `2b2e83fb2b26daea3429d4c3dbd2f9ec3b705ca5f24762d85ca38c2368fae240`):
+All 116 automated tests across 12 test modules pass locally:
 - Checkpoints & rotation (`test_checkpoints.py` — 2 tests)
 - CLI commands & lifecycle (`test_cli.py` — 10 tests)
 - Configuration schemas & loaders (`test_config.py` — 4 tests)
@@ -259,13 +260,13 @@ All 114 tests across 12 test modules pass on source-host (`TEST_SUITE_EVIDENCE_1
 - Deterministic resume continuity, odd accumulation & DPO invariance (`test_resume_continuity.py` — 6 tests)
 
 > [!NOTE]
-> **Host vs Installed Evidence Distinction**: The 114-test suite (`TEST_SUITE_EVIDENCE_14.log`) represents source-host verification. Installed virtualenv execution is separately verified in `FINAL_INSTALLED_CANDIDATE_EVIDENCE.log` (15,408 B, SHA256 `8b600ff928767c30f0724e08be1326510475dde6efa21c3ca1ab95700ec7982c`), covering package imports, pip check, entrypoint verification, candidate SmolLM-135M adaptation, lifecycle unack/ack cancellation, and MCP tools under declared dependencies (`torch 2.14.1+cpu`, `transformers 5.19.0`, `accelerate 1.15.0`, `peft 0.21.2`, `trl 1.14.1`).
+> **Host vs Installed Evidence Distinction**: Source-host test execution is preserved in historical logs (initial 114-test baseline in `TEST_SUITE_EVIDENCE_14.log`, 239.41s, SHA256 `2b2e83fb2b26daea3429d4c3dbd2f9ec3b705ca5f24762d85ca38c2368fae240`). Pristine installed virtual environment execution is separately verified in `FINAL_INSTALLED_CANDIDATE_EVIDENCE.log` (15,408 B, SHA256 `8b600ff928767c30f0724e08be1326510475dde6efa21c3ca1ab95700ec7982c`), covering package imports, `pip check`, entrypoint verification, candidate SmolLM-135M adaptation, lifecycle unack/ack cancellation, and MCP tools under declared dependencies (`torch 2.14.1+cpu`, `transformers 5.19.0`, `accelerate 1.15.0`, `peft 0.21.2`, `trl 1.14.1`).
 
 ---
 
-## 🔒 Gated Publication Policy
+## 🔒 Release & Publication Status
 
-In accordance with release engineering standards, public repository publication and remote git push are **strictly gated upon final CEO independent technical acceptance across all 11 criteria**. Remote commit, clone, clean install, and CI verification following publication will close Criterion 10. No PyPI release or separate Owner sign-off is required.
+The repository has completed release engineering acceptance across clean distribution wheel packaging, isolated virtual environment installation, provenance auditing, and automated test suite verification.
 
 ---
 

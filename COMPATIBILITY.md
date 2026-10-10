@@ -20,7 +20,7 @@ In accordance with strict empirical engineering principles:
 |---|---|---|---|---|
 | **Local CPU (Windows x86_64)** | 🟢 **Verified & Tested** | Tier 1 (Host Verified) | PyTorch CPU / OneDNN | Full test suite passed (114 automated tests across 12 test modules in `TEST_SUITE_EVIDENCE_14.log`). Verified on Intel Core i5-12400F (6C/12T), 32 GB RAM. CPT, SFT, LoRA, and DPO training loops executed end-to-end. |
 | **Local CPU (Linux / macOS)** | ⚠️ **Architecturally Supported** | Empirically Unverified on Host | PyTorch CPU | Cross-platform abstractions in place; empirical host execution pending Linux/macOS runners. Checked-in CI workflow is not a passed host run. |
-| **Single GPU** (NVIDIA CUDA) | ⚠️ **Architecturally Supported** | Hardware-Unverified on Host | PyTorch CUDA / SDPA / AMP | Code paths, device placement (`cuda:0`), mixed precision (`fp16`/`bf16`), and memory tracking fully implemented. Marked unverified until physical CUDA GPU telemetry is attached. |
+| **Single GPU** (NVIDIA CUDA) | ⚠️ **Architecturally Supported** | Hardware-Unverified on Host | PyTorch CUDA / SDPA / AMP | Code paths, device placement (`cuda:0`), mixed precision (`fp16`/`bf16`), and memory tracking fully implemented. Detailed execution protocol staged in [docs/cuda_validation_plan.md](docs/cuda_validation_plan.md). Marked unverified until physical CUDA GPU telemetry is attached. |
 | **Multi-GPU (DDP)** | ⚠️ **Architecturally Supported** | Hardware-Unverified on Host | `torch.distributed` / Accelerate | Standard DistributedDataParallel process spawning and gradient synchronization integrated via Accelerate. Marked experimental until multi-device verification. |
 | **Multi-GPU (FSDP2)** | ⚠️ **Architecturally Supported** | Hardware-Unverified on Host | PyTorch FSDP2 (`torch.distributed.fsdp`) | Per-layer sharded parameter and optimizer state hooks configured. Marked experimental until physical multi-GPU cluster validation. |
 | **DeepSpeed ZeRO (1/2/3)** | ⚠️ **Architecturally Supported** | Hardware-Unverified on Host | DeepSpeed / Accelerate plugin | Configuration templates and engine hooks integrated into job schemas. Hardware execution pending multi-GPU server availability. |
@@ -95,7 +95,7 @@ The path from single-host execution to distributed multi-node clusters proceeds 
          │
          ▼
 [Phase 2: Single & Multi-GPU Validation] (NEXT CLUSTER RELEASE)
-  ├── Single-GPU CUDA verification with SDPA and FP16/BF16 AMP
+  ├── Single-GPU CUDA verification with SDPA and FP16/BF16 AMP (see docs/cuda_validation_plan.md)
   ├── Multi-GPU DDP verification with NCCL backend
   ├── FSDP2 sharded parameter & optimizer state verification
   └── DeepSpeed ZeRO-1/2/3 integration verification
